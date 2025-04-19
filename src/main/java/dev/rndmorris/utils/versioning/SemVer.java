@@ -13,6 +13,12 @@ public final class SemVer {
         this.major = major;
         this.minor = minor;
         this.patch = patch;
+        if (tag != null) {
+            tag = tag.trim();
+            if (tag.isEmpty()) {
+                tag = null;
+            }
+        }
         this.tag = tag;
     }
 
