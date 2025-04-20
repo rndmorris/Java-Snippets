@@ -2,7 +2,7 @@ package dev.rndmorris.utils.versioning;
 
 import java.util.Objects;
 
-public final class SemVer {
+public final class SemVer implements Comparable<SemVer> {
 
     public final int major;
     public final int minor;
@@ -38,5 +38,31 @@ public final class SemVer {
     @Override
     public String toString() {
         return String.format("%d.%d.%d%s", major, minor, patch, tag != null ? "-" + tag : "");
+    }
+
+    @Override
+    public int compareTo(SemVer o) {
+        var diff = major - o.major;
+        if (diff != 0) {
+            return Math.min(Math.max(diff, -1), 1);
+        }
+        diff = minor - o.minor;
+        if (diff != 0) {
+            return Math.min(Math.max(diff, -1), 1);
+        }
+        diff = patch - o.patch;
+        if (diff != 0) {
+            return Math.min(Math.max(diff, -1), 1);
+        }
+        if (tag == null && o.tag == null) {
+            return 0;
+        }
+        if (tag == null) {
+            return 1;
+        }
+        if (o.tag == null) {
+            return -1;
+        }
+        return Math.min(Math.max(tag.compareTo(o.tag), -1), 1);
     }
 }
